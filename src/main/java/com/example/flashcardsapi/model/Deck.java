@@ -1,11 +1,14 @@
 package com.example.flashcardsapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,9 +26,12 @@ public class Deck {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
+
     private String title;
     private String description;
-    @OneToMany
+
+    @OneToMany(mappedBy="deck", cascade = CascadeType.ALL, fetch= FetchType.LAZY)
+    @JsonIgnore
     private List<Card> cards = new ArrayList<>();
 
 
