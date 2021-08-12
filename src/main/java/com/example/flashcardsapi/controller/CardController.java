@@ -3,6 +3,7 @@ package com.example.flashcardsapi.controller;
 import com.example.flashcardsapi.model.Card;
 import com.example.flashcardsapi.service.CardService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@CrossOrigin
 @RequestMapping("/api/v1/decks/{deckId}/cards")
 @RestController
 public class CardController {
