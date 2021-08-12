@@ -28,8 +28,13 @@ public class CardController {
     }
 
     @GetMapping
-    public List<Card> getCard(@PathVariable("deckId") Long deckId){
+    public List<Card> getAllCards(@PathVariable("deckId") Long deckId){
         return cardService.getCardsByDeckId(deckId);
+    }
+
+    @GetMapping("/{id}")
+    public Card getById(@PathVariable("deckId") Long deckId, @PathVariable("id") Long id){
+        return cardService.getCardById(deckId, id);
     }
 
     @PostMapping

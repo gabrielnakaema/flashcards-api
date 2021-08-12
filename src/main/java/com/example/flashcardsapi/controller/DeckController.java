@@ -29,23 +29,26 @@ public class DeckController {
     }
 
     @GetMapping
-    public List<Deck> getAll() {
-        return deckService.findAll();
+    public List<Deck> getAllDecks() {
+        return deckService.getAll();
     }
 
+    @GetMapping("/{id}")
+    public Deck getDeckById(@PathVariable("id") Long id){return deckService.getDeckById(id);}
+
     @PostMapping
-    public Deck create(@RequestBody Deck deck){
-        return deckService.create(deck);
+    public Deck createDeck(@RequestBody Deck deck){
+        return deckService.createDeck(deck);
     }
 
     @PutMapping("/{id}")
-    public Deck update(@PathVariable("id") Long id, @RequestBody Deck deck) {
-        return deckService.update(deck, id);
+    public Deck updateDeck(@PathVariable("id") Long id, @RequestBody Deck deck) {
+        return deckService.updateDeck(deck, id);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable("id") Long id) {
-        deckService.delete(id);
+    public void deleteDeck(@PathVariable("id") Long id) {
+        deckService.deleteDeck(id);
     }
 
 }

@@ -19,15 +19,15 @@ public class DeckService {
         this.deckRepository = deckRepository;
     }
 
-    public List<Deck> findAll() {
+    public List<Deck> getAll() {
         return deckRepository.findAll();
     }
 
-    public Deck create(Deck deck) {
+    public Deck createDeck(Deck deck) {
         return deckRepository.save(deck);
     }
 
-    public Deck update(Deck deck, Long id){
+    public Deck updateDeck(Deck deck, Long id){
         Deck foundDeck = checkIfExists(id);
         foundDeck.setCards(deck.getCards());
         foundDeck.setDescription(deck.getDescription());
@@ -35,7 +35,11 @@ public class DeckService {
         return deckRepository.save(foundDeck);
     }
 
-    public void delete(Long id){
+    public Deck getDeckById(Long id){
+        return checkIfExists(id);
+    }
+
+    public void deleteDeck(Long id){
         Deck foundDeck = checkIfExists(id);
         deckRepository.delete(foundDeck);
     }

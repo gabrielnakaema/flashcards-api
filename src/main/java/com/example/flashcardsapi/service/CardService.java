@@ -54,6 +54,11 @@ public class CardService {
         cardRepository.delete(foundCard);
     }
 
+    public Card getCardById(Long deckId, Long id) {
+        checkIfDeckExists(deckId);
+        return checkIfCardExists(id);
+    }
+
     private Deck checkIfDeckExists(Long deckId) {
         return deckRepository.findById(deckId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Deck not found with id: " + deckId));
