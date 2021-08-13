@@ -2,6 +2,7 @@ package com.example.flashcardsapi.controller;
 
 
 import com.example.flashcardsapi.model.Deck;
+import com.example.flashcardsapi.payload.DeckDetailResponse;
 import com.example.flashcardsapi.service.DeckService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -34,7 +35,7 @@ public class DeckController {
     }
 
     @GetMapping("/{id}")
-    public Deck getDeckById(@PathVariable("id") Long id){return deckService.getDeckById(id);}
+    public DeckDetailResponse getDeckById(@PathVariable("id") Long id){return deckService.getDeckById(id);}
 
     @PostMapping
     public Deck createDeck(@RequestBody Deck deck){

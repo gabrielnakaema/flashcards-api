@@ -1,6 +1,8 @@
 package com.example.flashcardsapi.service;
 
 import com.example.flashcardsapi.model.Deck;
+import com.example.flashcardsapi.payload.DeckDetailResponse;
+import com.example.flashcardsapi.repository.CardRepository;
 import com.example.flashcardsapi.repository.DeckRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,9 +16,12 @@ public class DeckService {
 
     private final DeckRepository deckRepository;
 
+    private final CardRepository cardRepository;
+
     @Autowired
-    public DeckService(DeckRepository deckRepository) {
+    public DeckService(DeckRepository deckRepository, CardRepository cardRepository) {
         this.deckRepository = deckRepository;
+        this.cardRepository = cardRepository;
     }
 
     public List<Deck> getAll() {
@@ -35,8 +40,16 @@ public class DeckService {
         return deckRepository.save(foundDeck);
     }
 
-    public Deck getDeckById(Long id){
-        return checkIfExists(id);
+    public DeckDetailResponse getDeckById(Long id){
+        Deck foundDeck = checkIfExists(id);
+        Long cardCount = cardRepository.countByDeckId(id);
+        return DeckDetailResponse
+                .builder()
+                .id(foundDeck.getId())
+                .title(foundDeck.getTitle())
+                .description(foundDeck.getDescription())
+                .cardCount(cardCount)
+                .build();
     }
 
     public void deleteDeck(Long id){
