@@ -38,8 +38,8 @@ public class CardController {
     }
 
     @PostMapping
-    public Card createCard(@PathVariable("deckId") Long deckId, @RequestBody Card card){
-        return cardService.addCard(deckId, card);
+    public List<Card> createCard(@PathVariable("deckId") Long deckId, @RequestBody List<Card> cards){
+        return cardService.addCards(deckId, cards);
     }
 
     @PutMapping("/{id}")

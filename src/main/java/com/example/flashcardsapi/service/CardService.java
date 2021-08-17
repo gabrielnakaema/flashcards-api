@@ -23,15 +23,10 @@ public class CardService {
         this.deckRepository = deckRepository;
     }
 
-    public Card addCard(Long deckId, Card card){
+    public List<Card> addCards(Long deckId, List<Card> cards){
         Deck foundDeck = checkIfDeckExists(deckId);
-        Card newCard = new Card();
-        newCard.setAnswer(card.getAnswer());
-        newCard.setHint(card.getHint());
-        newCard.setQuestion(card.getQuestion());
-        newCard.setDeck(foundDeck);
-
-        return cardRepository.save(newCard);
+        cards.forEach(card -> card.setDeck(foundDeck));
+        return cardRepository.saveAll(cards);
     }
 
     public List<Card> getCardsByDeckId(Long deckId){
