@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -32,6 +33,13 @@ public class CardService {
     public List<Card> getCardsByDeckId(Long deckId){
         checkIfDeckExists(deckId);
         return cardRepository.findByDeckId(deckId);
+    }
+
+    public List<Card> getRandomCardsByDeckId(Long deckId) {
+        checkIfDeckExists(deckId);
+        List<Card> cards =  cardRepository.findByDeckId(deckId);
+        Collections.shuffle(cards);
+        return cards;
     }
 
     public Card updateCard(Long deckId, Long id, Card card) {
@@ -64,5 +72,6 @@ public class CardService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Card not found with id: " + cardId));
 
     }
+
 
 }
