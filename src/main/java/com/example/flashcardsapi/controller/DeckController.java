@@ -3,6 +3,7 @@ package com.example.flashcardsapi.controller;
 
 import com.example.flashcardsapi.model.Deck;
 import com.example.flashcardsapi.payload.DeckDetailResponse;
+import com.example.flashcardsapi.payload.DeckRequest;
 import com.example.flashcardsapi.service.DeckService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @CrossOrigin
@@ -38,12 +40,12 @@ public class DeckController {
     public DeckDetailResponse getDeckById(@PathVariable("id") Long id){return deckService.getDeckById(id);}
 
     @PostMapping
-    public Deck createDeck(@RequestBody Deck deck){
+    public Deck createDeck(@RequestBody @Valid DeckRequest deck){
         return deckService.createDeck(deck);
     }
 
     @PutMapping("/{id}")
-    public Deck updateDeck(@PathVariable("id") Long id, @RequestBody Deck deck) {
+    public Deck updateDeck(@PathVariable("id") Long id, @RequestBody @Valid DeckRequest deck) {
         return deckService.updateDeck(deck, id);
     }
 

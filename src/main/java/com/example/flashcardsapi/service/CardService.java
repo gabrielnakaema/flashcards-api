@@ -2,6 +2,7 @@ package com.example.flashcardsapi.service;
 
 import com.example.flashcardsapi.model.Card;
 import com.example.flashcardsapi.model.Deck;
+import com.example.flashcardsapi.payload.CardRequest;
 import com.example.flashcardsapi.repository.CardRepository;
 import com.example.flashcardsapi.repository.DeckRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CardService {
@@ -24,10 +26,17 @@ public class CardService {
         this.deckRepository = deckRepository;
     }
 
-    public List<Card> addCards(Long deckId, List<Card> cards){
+    public List<Card> addCards(Long deckId, List<CardRequest> cards){
         Deck foundDeck = checkIfDeckExists(deckId);
-        cards.forEach(card -> card.setDeck(foundDeck));
-        return cardRepository.saveAll(cards);
+        List<Card> newCards = cards.stream().map(cardR -> {
+            Card newCard = new Card();
+            newCard.setDeck(foundDeck);
+            newCard.setQuestion(cardR.getQuestion());
+            newCard.setAnswer(cardR.getAnswer());
+            newCard.setHint(cardR.getHint());
+            return newCard;
+        }).collect(Collectors.toList());
+        return cardRepository.saveAll(newCards);
     }
 
     public List<Card> getCardsByDeckId(Long deckId){
@@ -42,7 +51,7 @@ public class CardService {
         return cards;
     }
 
-    public Card updateCard(Long deckId, Long id, Card card) {
+    public Card updateCard(Long deckId, Long id, CardRequest card) {
         checkIfDeckExists(deckId);
         Card foundCard = checkIfCardExists(id);
         foundCard.setQuestion(card.getQuestion());

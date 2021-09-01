@@ -2,6 +2,7 @@ package com.example.flashcardsapi.service;
 
 import com.example.flashcardsapi.model.Deck;
 import com.example.flashcardsapi.payload.DeckDetailResponse;
+import com.example.flashcardsapi.payload.DeckRequest;
 import com.example.flashcardsapi.repository.CardRepository;
 import com.example.flashcardsapi.repository.DeckRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,13 +29,15 @@ public class DeckService {
         return deckRepository.findAll();
     }
 
-    public Deck createDeck(Deck deck) {
-        return deckRepository.save(deck);
+    public Deck createDeck(DeckRequest deck) {
+        Deck entityDeck = new Deck();
+        entityDeck.setTitle(deck.getTitle());
+        entityDeck.setDescription(deck.getDescription());
+        return deckRepository.save(entityDeck);
     }
 
-    public Deck updateDeck(Deck deck, Long id){
+    public Deck updateDeck(DeckRequest deck, Long id){
         Deck foundDeck = checkIfExists(id);
-        foundDeck.setCards(deck.getCards());
         foundDeck.setDescription(deck.getDescription());
         foundDeck.setTitle(deck.getTitle());
         return deckRepository.save(foundDeck);

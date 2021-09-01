@@ -13,6 +13,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -26,11 +28,16 @@ public class Card {
     private Long id;
 
     @JsonIgnore
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="deck_id")
     private Deck deck;
 
+    @NotNull
+    @NotBlank
     private String question;
+    @NotNull
+    @NotBlank
     private String answer;
     private String hint;
 }

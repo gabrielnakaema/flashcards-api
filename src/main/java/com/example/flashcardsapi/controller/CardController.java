@@ -1,10 +1,23 @@
 package com.example.flashcardsapi.controller;
 
 import com.example.flashcardsapi.model.Card;
+import com.example.flashcardsapi.payload.CardRequest;
 import com.example.flashcardsapi.service.CardService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 @CrossOrigin
@@ -34,12 +47,12 @@ public class CardController {
     }
 
     @PostMapping
-    public List<Card> createCard(@PathVariable("deckId") Long deckId, @RequestBody List<Card> cards){
+    public List<Card> createCard(@PathVariable("deckId") Long deckId, @RequestBody @Validated @NotEmpty List<@Valid CardRequest> cards){
         return cardService.addCards(deckId, cards);
     }
 
     @PutMapping("/{id}")
-    public Card updateCard(@PathVariable("deckId") Long deckId, @PathVariable("id") Long id, @RequestBody Card card){
+    public Card updateCard(@PathVariable("deckId") Long deckId, @PathVariable("id") Long id, @RequestBody @Valid CardRequest card){
         return cardService.updateCard(deckId, id, card);
     }
 

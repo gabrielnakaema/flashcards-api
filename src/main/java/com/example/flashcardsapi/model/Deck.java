@@ -13,8 +13,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -27,12 +30,18 @@ public class Deck {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
+    @NotBlank
     private String title;
+    @NotNull
+    @NotBlank
     private String description;
 
     @OneToMany(mappedBy="deck", cascade = CascadeType.ALL, fetch= FetchType.LAZY)
     @JsonIgnore
     private List<Card> cards = new ArrayList<>();
 
-
+    public List<Card> getCards() {
+        return Objects.requireNonNullElseGet(cards, ArrayList::new);
+    }
 }
