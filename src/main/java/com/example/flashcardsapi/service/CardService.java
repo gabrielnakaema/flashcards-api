@@ -2,16 +2,20 @@ package com.example.flashcardsapi.service;
 
 import com.example.flashcardsapi.model.Card;
 import com.example.flashcardsapi.model.Deck;
+import com.example.flashcardsapi.model.User;
 import com.example.flashcardsapi.payload.CardRequest;
 import com.example.flashcardsapi.repository.CardRepository;
 import com.example.flashcardsapi.repository.DeckRepository;
+import com.example.flashcardsapi.security.UserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,12 +32,15 @@ public class CardService {
 
     public List<Card> addCards(Long deckId, List<CardRequest> cards){
         Deck foundDeck = checkIfDeckExists(deckId);
-        List<Card> newCards = cards.stream().map(cardR -> {
+        if(!checkIfDeckIsOwnedByCurrentUser(foundDeck.getUser())){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "cannot add cards to a deck created by another user");
+        }
+        List<Card> newCards = cards.stream().map(card -> {
             Card newCard = new Card();
             newCard.setDeck(foundDeck);
-            newCard.setQuestion(cardR.getQuestion());
-            newCard.setAnswer(cardR.getAnswer());
-            newCard.setHint(cardR.getHint());
+            newCard.setQuestion(card.getQuestion());
+            newCard.setAnswer(card.getAnswer());
+            newCard.setHint(card.getHint());
             return newCard;
         }).collect(Collectors.toList());
         return cardRepository.saveAll(newCards);
@@ -52,7 +59,10 @@ public class CardService {
     }
 
     public Card updateCard(Long deckId, Long id, CardRequest card) {
-        checkIfDeckExists(deckId);
+        Deck foundDeck = checkIfDeckExists(deckId);
+        if(!checkIfDeckIsOwnedByCurrentUser(foundDeck.getUser())){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "cannot update cards in deck created by another user");
+        }
         Card foundCard = checkIfCardExists(id);
         foundCard.setQuestion(card.getQuestion());
         foundCard.setHint(card.getHint());
@@ -61,7 +71,10 @@ public class CardService {
     }
 
     public void deleteCard(Long deckId, Long id) {
-        checkIfDeckExists(deckId);
+        Deck foundDeck = checkIfDeckExists(deckId);
+        if(!checkIfDeckIsOwnedByCurrentUser(foundDeck.getUser())){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "cannot delete cards in deck created by another user");
+        }
         Card foundCard = checkIfCardExists(id);
         cardRepository.delete(foundCard);
     }
@@ -82,5 +95,16 @@ public class CardService {
 
     }
 
+    private Boolean checkIfDeckIsOwnedByCurrentUser(User deckOwner){
+        if(deckOwner == null || deckOwner.getId() == null){
+            return true;
+        }
+        UserPrincipal principal = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Long principalId = principal.getId();
+        if(principalId == null) {
+            return false;
+        }
+        return Objects.equals(deckOwner.getId(), principalId);
+    }
 
 }

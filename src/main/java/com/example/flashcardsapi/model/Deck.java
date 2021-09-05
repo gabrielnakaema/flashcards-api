@@ -12,6 +12,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -33,6 +35,7 @@ public class Deck {
     @NotNull
     @NotBlank
     private String title;
+
     @NotNull
     @NotBlank
     private String description;
@@ -40,6 +43,11 @@ public class Deck {
     @OneToMany(mappedBy="deck", cascade = CascadeType.ALL, fetch= FetchType.LAZY)
     @JsonIgnore
     private List<Card> cards = new ArrayList<>();
+
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="user_id")
+    @JsonIgnore
+    private User user;
 
     public List<Card> getCards() {
         return Objects.requireNonNullElseGet(cards, ArrayList::new);

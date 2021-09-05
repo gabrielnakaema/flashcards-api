@@ -3,6 +3,7 @@ package com.example.flashcardsapi.exception;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
@@ -27,5 +28,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         return new ResponseEntity<>(exceptionToReturn, new HttpHeaders(), exceptionToReturn.getStatus());
 
+    }
+
+    @ExceptionHandler(UsernameNotFoundException.class)
+    public ResponseEntity<FlashcardsApiException> usernameNotFoundException(UsernameNotFoundException exception) {
+        FlashcardsApiException exceptionToReturn = new FlashcardsApiException(HttpStatus.FORBIDDEN, "Username from token could not be found");
+
+        return new ResponseEntity<>(exceptionToReturn, new HttpHeaders(), exceptionToReturn.getStatus());
     }
 }
