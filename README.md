@@ -25,7 +25,7 @@ At the moment, users can create decks and add cards to it and study from decks c
 - Allow users to set created decks to private and public
 - Add record of last accessed cards by a user so the next time they can get different cards
 - Add possibility to prioritize cards or not, so they can come first or last
-- Allow users to save a copy of deck to their
+- Allow users to save copies of someone else's decks
 
 ## <a id="api-endpoints">API Endpoints</a>
 
