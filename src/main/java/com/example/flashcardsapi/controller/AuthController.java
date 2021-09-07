@@ -45,7 +45,9 @@ public class AuthController {
                     new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword())
             );
             UserDetails userDetails = userService.loadUserByUsername(authRequest.getUsername());
-            AuthenticationResponse authResponse = new AuthenticationResponse(jwtTokenUtil.generateToken(userDetails));
+            AuthenticationResponse authResponse = new AuthenticationResponse();
+            authResponse.setToken(jwtTokenUtil.generateToken(userDetails));
+            authResponse.setUsername(userDetails.getUsername());
             return ResponseEntity.ok(authResponse);
         } catch (BadCredentialsException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new FlashcardsApiResponse(e.getMessage(), 401));

@@ -44,6 +44,12 @@ JWT token is obtained by signing up and then logging in with the correct credent
 |  POST  | /api/v1/auth/login  |   Log in    | [JSON](#login-body)  |
 |  POST  | /api/v1/auth/signup |   Sign up   | [JSON](#signup-body) |
 
+### User
+
+| Method |         URL         | Description | Sample Request Body  |
+| :----: | :-----------------: | :---------: | :------------------: |
+|  GET*  | /api/v1/user/me  |   Get logged in user details    |   |
+
 ### Decks
 
 |   Method   |          URL           |   Description    |    Sample Request Body    |
