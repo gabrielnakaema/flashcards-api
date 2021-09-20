@@ -48,7 +48,7 @@ public class CardService {
 
     public List<Card> getCardsByDeckId(Long deckId){
         checkIfDeckExists(deckId);
-        return cardRepository.findByDeckId(deckId);
+        return cardRepository.findByDeckIdOrderById(deckId);
     }
 
     public List<Card> getRandomCardsByDeckId(Long deckId) {
