@@ -4,11 +4,11 @@
 
 ## About this project
 
-This is the API for the flashcards application located at this other [repository](https://github.com/gabrielnakaema/flashcards-client)
+This is the API for the flashcards application located at this other [repository](https://github.com/gabrielnakaema/flashcards-front)
 
 This is still a work in progress
 
-The goal of this application is to provide a way for users to store and access decks of flashcards so they can be used in spaced repetition learning.
+This project's goal is to create an application where users can create and store decks of flashcards that can assist them in learning through spaced repetition methods.
 
 At the moment, users can create decks and add cards to it and study from decks created by other people, API endpoints can be located down [below](#api-endpoints).
 
